@@ -12,6 +12,22 @@ services:
     # # --save 20 1 which instructs the server to save 1 or more writes every 20 seconds to disk in case the server restarts
     volumes: 
       - cache:/data
+  api:
+    build:
+      context: ./api
+
+    image: api
+    container_name: api
+
+    ports:
+      - target: 80
+        published: 8181
+      
+    healthcheck:
+      test: [ "CMD", "curl", "-sS", "api:80" ]
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
 volumes:
   cache:
